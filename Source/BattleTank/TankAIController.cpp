@@ -29,3 +29,18 @@ void ATankAIController::BeginPlay()
 
 	UE_LOG(LogTemp, Warning, TEXT("TankAIController begin play"));
 }
+
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimAtPlayer();
+}
+
+void ATankAIController::AimAtPlayer()
+{
+	ATank * PlayerTank = GetPlayerTank();
+	if (PlayerTank)
+	{
+		GetControlledTank()->AimAt(PlayerTank->GetActorLocation());
+	}
+}
