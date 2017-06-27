@@ -1,12 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankBarrel.h"
+#include "Engine/World.h"
 
-void UTankBarrel::Elevate(float DegreesPerSecond)
+// -1 is downward movement, +1 is upward movement
+void UTankBarrel::Elevate(float RelativeSpeed)
 {
-	//set rotator with aim direction
-	//rotate barrel according to z
-	UE_LOG(LogTemp, Warning, TEXT("Barrel elevate at %f m/s"), DegreesPerSecond);
+	RelativeSpeed = FMath::Clamp(RelativeSpeed, -1.f, 1.f);
+	auto ElevationChange = RelativeSpeed * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
+	auto RawNewElevation = RelativeRotation.Pitch + ElevationChange;
+	auto Elevation = FMath::Clamp(RawNewElevation, MinElevationDegrees, MaxElevationDegrees);
+	SetRelativeRotation(FRotator(Elevation, 0, 0));
+	
 }
 
 
