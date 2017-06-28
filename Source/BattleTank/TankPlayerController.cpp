@@ -14,8 +14,6 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Pawn is %s"), *Possessed->GetName());
 	}
-	
-	UE_LOG(LogTemp, Warning, TEXT("TankPlayerController begin play"));
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

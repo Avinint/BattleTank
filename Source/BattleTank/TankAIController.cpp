@@ -31,8 +31,6 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("AIController found player: %s"), *PlayerTank->GetName());
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("TankAIController begin play"));
 }
 
 void ATankAIController::Tick(float DeltaTime)

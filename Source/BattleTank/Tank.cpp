@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Engine/World.h"
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
@@ -23,6 +24,11 @@ void ATank::SetTurretReference(UTankTurret * Turret)
 	TankAimingComponent->SetTurretReference(Turret);
 }
 
+void ATank::Fire()
+{
+	auto Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f : Tank firing!!"), Time)
+}
 
 void ATank::AimAt(FVector HitLocation)
 {
