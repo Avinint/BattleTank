@@ -6,14 +6,6 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto Possessed = GetControlledTank();
-	if (!Possessed) {
-		UE_LOG(LogTemp, Warning, TEXT("No Tank controlled"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Pawn is %s"), *Possessed->GetName());
-	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

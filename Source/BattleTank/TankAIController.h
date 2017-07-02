@@ -20,7 +20,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	ATank * GetControlledTank() const;
-	ATank * GetPlayerTank() const;
-	void AimAtPlayer();
+
+private:
+	float AcceptanceRadius = 3000;
 };
