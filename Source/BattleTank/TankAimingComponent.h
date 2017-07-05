@@ -27,15 +27,12 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void SetBarrelReference(UTankBarrel* Barrel);
-	void SetTurretReference(UTankTurret* Turret);
-
-	// TODO add SetTurretReference
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UTankBarrel *Barrel, UTankTurret *Turret);
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Reloading;
+	EFiringState FiringState = EFiringState::Aiming;
 
 private:
 	UTankBarrel* Barrel = nullptr;

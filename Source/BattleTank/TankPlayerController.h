@@ -8,8 +8,10 @@
 #include "TankPlayerController.generated.h"
 
 class ATank;
+class ATankAimingComponent;
+
 /**
- * 
+ *  Handles Player controls
  */
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
@@ -29,6 +31,9 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank * GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* TankAimingCompRef);
 
 private:
 	// rotates barrel to follow crosshair

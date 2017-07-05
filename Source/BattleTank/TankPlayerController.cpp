@@ -1,11 +1,21 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
+#include "TankAimingComponent.h"
 #include "Tank.h"
 
 // Called when the game starts or when spawned
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (ensure(AimingComponent))
+	{
+		FoundAimingComponent(AimingComponent);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Aiming component not found at BeginPlay"));
+	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -19,9 +29,10 @@ ATank * ATankPlayerController::GetControlledTank() const
 	return Cast<ATank>(GetPawn());
 }
 
+
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 	FVector HitLocation; // Out parameter
 	if (GetSightRayHitLocation(HitLocation)) // Has side-effect, it raytraces
 	{
