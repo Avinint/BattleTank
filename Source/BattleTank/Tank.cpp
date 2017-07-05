@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-#include "TankAimingComponent.h"
 #include "Projectile.h"
 #include "Engine/StaticMeshSocket.h"
 #include "Engine/World.h"
@@ -13,14 +12,11 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	auto Time = GetWorld()->GetRealTimeSeconds();
-	//UE_LOG(LogTemp, Warning, TEXT("%f : DONKEY C++ Constructor"))
 }
 
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATank::Fire()
@@ -38,9 +34,5 @@ void ATank::Fire()
 	}
 }
 
-void ATank::AimAt(FVector HitLocation)
-{
-	if (!ensure(TankAimingComponent)) { return; }
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
+
 
