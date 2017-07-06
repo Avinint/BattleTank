@@ -2,8 +2,10 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -63,5 +65,50 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	auto DeltaRotator = AimAsARotator - Rotator;
 	
 	Turret->Rotate(DeltaRotator.Yaw);
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	if ((FPlatformTime::Seconds() - LastFireTime) <= ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	} 
+	else if (IsBarrelMoving())
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
+	}
+	// TODO handle other states
+}
+
+bool UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
+{
+	auto Vector = Turret->GetForwardVector().GetSafeNormal();
+	return AimDirection.Equals(Vector);
+}
+
+void UTankAimingComponent::Fire()
+{
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+	if (FiringState != EFiringState::Reloading) {
+		//Spawn projectile at socket location
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile")));
+		Projectile->Launch(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	// So that first fire is after initial reload
+	LastFireTime = FPlatformTime::Seconds();
 }
 
